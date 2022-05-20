@@ -22,7 +22,25 @@ export function getAppointmentsForDay(state, day) {
   return appsPerDay;
 }
  
+// need to display interviews from data
+export const getInterview = (state, interview) => {
+  if (!interview) {
+    return null;
+  } else {
+    // loop though interviewers in state
+    for(const id in state.interviewers) {
+    // console.log("🎲 ~ state.interviewers", state.interviewers);
+      if(interview.interviewer === state.interviewers[id].id) {
+        console.log("🎲 ~ state.interviewers[id].id", state.interviewers[id].id);
+        return {
+          student: interview.student,
+          interviewer: {...state.interviewers[id]}
+        };
+      }
+    }
+  };
 
-
+return;
+};
 
 
