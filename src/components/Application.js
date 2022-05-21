@@ -49,7 +49,8 @@ export default function Application(props) {
     const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
     });
   
   const dailyAppointments = getAppointmentsForDay(state, state.day)
@@ -101,10 +102,11 @@ export default function Application(props) {
         <Appointment 
           key={appointment.id}
           {...appointment}
+          interview={interview}
         />
         )
       })
-    };
+    }
 
       <Appointment key="last" time="5pm" />
       </section>
