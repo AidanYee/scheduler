@@ -3,7 +3,7 @@ import DayList from "./DayList";
 import axios from "axios";
 import "components/Application.scss";
 import Appointment from "components/Appointment/index";
-import { getAppointmentsForDay, getInterview } from "../helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors";
 
 //mock appointments
 // const appointments = {
@@ -54,6 +54,7 @@ export default function Application(props) {
     });
   
   const dailyAppointments = getAppointmentsForDay(state, state.day)
+  const dailyInterviewers = getInterviewersForDay(state, state.day); 
 
   const setDay = day => setState({...state, day});
 
@@ -95,7 +96,7 @@ export default function Application(props) {
       <section className="schedule">
 
 
-        {dailyAppointments.map(appointment => {
+          {dailyAppointments.map(appointment => {
         const interview = getInterview(state, appointment.interview)
 
         return(
@@ -103,6 +104,7 @@ export default function Application(props) {
           key={appointment.id}
           {...appointment}
           interview={interview}
+          interviewers={dailyInterviewers}
         />
         )
       })
