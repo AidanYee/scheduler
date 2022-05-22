@@ -13,11 +13,12 @@ const [interviewer, setInterviewer] = useState(props.interviewer || null);
     setInterviewer(null);
   }
 
-  /* Reset state when press cancel button */
+  // Reset state when press cancel button
   function cancel() {
     reset();
     props.onCancel();
-  }
+    
+}
 
  return(
  <main className="appointment__card appointment__card--create">
