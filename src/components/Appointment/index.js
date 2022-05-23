@@ -11,12 +11,31 @@ import "components/Appointment/styles.scss"
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
+const SAVING = "SAVING";
 
 export default function Appointment(props) {
+  // shows different components based off of current state
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
- 
+    // saves booked interview for student
+    function save(name, interviewer) {
+      const interview = {
+        student:name,
+        interviewer
+      };
+        console.log("🎲 ~  name",  name);
+        console.log("🎲 ~ interviewer", interviewer);
+        console.log("🎲 ~ id",  props.id)
+        console.log("🎲 ~ interview",  interview)
+        console.log("🎲 ~ props.bookInterview", props.bookInterview);
+     
+    transition(SAVING)
+
+    props.bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+    }
+
    return (
    <article className="appointment">
       <Header time={props.time} />
@@ -29,7 +48,11 @@ export default function Appointment(props) {
         />
       )}
       {mode === CREATE && (
-        <Form interviewers={[]} onCancel={back} />
+        <Form 
+          interviewers={props.interviewers}
+          onCancel={back}
+          onSave={save}  
+        />
       )}
 
       {/* {props.interview ? <Show name={props.interview.student} interviewer={props.interview.interviewer.name} /> : <Empty /> } */}

@@ -30,7 +30,7 @@ const [interviewer, setInterviewer] = useState(props.interviewer || null);
         type="text"
         placeholder="Enter Student Name"
         value={name}
-        onChange={(event) => setName(event.target.value)}
+        onChange={event => setName(event.target.value)}
       />
     </form>
      <InterviewerList 
