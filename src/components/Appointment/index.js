@@ -7,6 +7,7 @@ import Show from "./Show"
 import useVisualMode from "hooks/useVisualMode";
 
 import "components/Appointment/styles.scss"
+import Status from "./Status";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -52,6 +53,11 @@ export default function Appointment(props) {
           interviewers={props.interviewers}
           onCancel={back}
           onSave={save}  
+        />
+      )}
+       {mode === SAVING && (
+        <Status
+          message={'Saving'}  
         />
       )}
 
