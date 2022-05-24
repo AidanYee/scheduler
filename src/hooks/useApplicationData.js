@@ -2,19 +2,15 @@ import { useState, useEffect } from "react";
 const axios = require("axios").default;
 
 export default function ApplicationData(props) {
-    const [state, setState] = useState({
-    day: "Monday",
-    days: [],
-    appointments: {},
-    interviewers: {},
-    });
+  const [state, setState] = useState({
+  day: "Monday",
+  days: [],
+  appointments: {},
+  interviewers: {},
+  });
 
-  // const dailyAppointments = getAppointmentsForDay(state, state.day)
-  // const dailyInterviewers = getInterviewersForDay(state, state.day); 
+ const setDay = day => setState({...state, day});
 
-  const setDay = day => setState({...state, day});
-
-  // const setDays = days => setState(prev => ({ ...prev, days }));
  useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
