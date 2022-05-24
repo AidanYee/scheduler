@@ -97,34 +97,34 @@ export default function Appointment(props) {
           message={'Deleting'}  
         />
       )}
-        {mode === CONFIRM && (
-          <Confirm
-            message={'r u sure u want to delete me m8'}
-            onConfirm={confirmDelete}
-            onCancel={back}
-          />
-        )}
-        {mode === EDIT && (
-          <Form 
-            name={props.interview.student}
-            interviewer={props.interview.interviewer.id}
-            interviewers={props.interviewers}
-            onCancel={back}
-            onSave={save}
-          />
-        )}
-         {mode === ERROR_SAVE && (
-        <Error 
-          message='Oh no! Failed to save 🥴'
-          onClose={back}
+      {mode === CONFIRM && (
+        <Confirm
+          message={'r u sure u want to delete me m8'}
+          onConfirm={confirmDelete}
+          onCancel={back}
         />
+      )}
+      {mode === EDIT && (
+        <Form 
+          name={props.interview.student}
+          interviewer={props.interview.interviewer.id}
+          interviewers={props.interviewers}
+          onCancel={back}
+          onSave={save}
+        />
+      )}
+        {mode === ERROR_SAVE && (
+      <Error 
+        message='Oh no! Failed to save 🥴'
+        onClose={back}
+      />
       )}
       {mode === ERROR_DELETE && (
         <Error 
           message='Uh oh! Failed to delete 🥴'
           onClose={back}
         />
-       )}
+      )}
     </article>
   ) 
 };
