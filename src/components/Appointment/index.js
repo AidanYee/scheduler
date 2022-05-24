@@ -1,14 +1,16 @@
 import React from "react";
 
+import useVisualMode from "hooks/useVisualMode";
+import "components/Appointment/styles.scss"
+
+// Appointment Components
 import Form from "./Form";
 import Header from "./Header"
 import Empty from "./Empty"
 import Show from "./Show"
-import useVisualMode from "hooks/useVisualMode";
-
-import "components/Appointment/styles.scss"
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
@@ -17,13 +19,15 @@ const SAVING = "SAVING";
 const DELETE = "DELETE";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   // shows different components based off of current state
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-    // saves booked interview for student
+    // SAVES booked interview for student
     function save(name, interviewer) {
       const interview = {
         student:name,
@@ -39,14 +43,18 @@ export default function Appointment(props) {
 
     props.bookInterview(props.id, interview)
       .then(() => transition(SHOW))
+      // error handling for EDIT
+      .catch(() => transition(ERROR_SAVE, true));
     }
 
-    // deletes appointment
+    // DELETES appointment
     function confirmDelete() {
       transition(DELETE, true)
 
       props.deleteInterview(props.id)
         .then(() => transition(EMPTY))
+        // error handling for DELETE
+        .catch(() => transition(ERROR_DELETE, true))
     }
 
     // shows the CONFIRM transition
@@ -54,6 +62,7 @@ export default function Appointment(props) {
       transition(CONFIRM)
     }
 
+    // EDITS the appointment
     function edit() {
       transition(EDIT)
     }
@@ -104,7 +113,18 @@ export default function Appointment(props) {
             onSave={save}
           />
         )}
- 
+         {mode === ERROR_SAVE && (
+        <Error 
+          message='Oh no! Failed to save 🥴'
+          onClose={back}
+        />
+      )}
+      {mode === ERROR_DELETE && (
+        <Error 
+          message='Uh oh! Failed to delete 🥴'
+          onClose={back}
+        />
+       )}
     </article>
   ) 
 };
