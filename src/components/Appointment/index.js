@@ -8,11 +8,14 @@ import useVisualMode from "hooks/useVisualMode";
 
 import "components/Appointment/styles.scss"
 import Status from "./Status";
+import Confirm from "./Confirm";
 
 const EMPTY = "EMPTY";
 const SHOW = "SHOW";
 const CREATE = "CREATE";
 const SAVING = "SAVING";
+const DELETE = "DELETE";
+const CONFIRM = "CONFIRM";
 
 export default function Appointment(props) {
   // shows different components based off of current state
@@ -25,16 +28,29 @@ export default function Appointment(props) {
         student:name,
         interviewer
       };
-        console.log("🎲 ~  name",  name);
-        console.log("🎲 ~ interviewer", interviewer);
-        console.log("🎲 ~ id",  props.id)
-        console.log("🎲 ~ interview",  interview)
-        console.log("🎲 ~ props.bookInterview", props.bookInterview);
+        // console.log("🎲 ~  name",  name);
+        // console.log("🎲 ~ interviewer", interviewer);
+        // console.log("🎲 ~ id",  props.id)
+        // console.log("🎲 ~ interview",  interview)
+        // console.log("🎲 ~ props.bookInterview", props.bookInterview);
      
     transition(SAVING)
 
     props.bookInterview(props.id, interview)
       .then(() => transition(SHOW))
+    }
+
+    // deletes appointment
+    function confirmDelete() {
+      transition(DELETE, true)
+
+      props.deleteInterview(props.id)
+        .then(() => transition(EMPTY))
+    }
+
+    // shows the CONFRIM transition
+    function confirm() {
+      transition(CONFIRM)
     }
 
    return (
@@ -46,6 +62,7 @@ export default function Appointment(props) {
         <Show 
           student={props.interview.student} 
           interviewer={props.interview.interviewer}
+          onDelete={confirm}
         />
       )}
       {mode === CREATE && (
@@ -60,10 +77,19 @@ export default function Appointment(props) {
           message={'Saving'}  
         />
       )}
-
-      {/* {props.interview ? <Show name={props.interview.student} interviewer={props.interview.interviewer.name} /> : <Empty /> } */}
+        {mode === DELETE && (
+        <Status
+          message={'Deleting'}  
+        />
+      )}
+        {mode === CONFIRM && (
+          <Confirm
+            message={'r u sure u want to delete me m8'}
+            onConfirm={confirmDelete}
+            onCancel={back}
+          />
+        )}
  
-
     </article>
   ) 
 };

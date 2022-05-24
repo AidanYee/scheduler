@@ -71,6 +71,7 @@ export default function Application(props) {
 
   }, [])
 
+  // creates a new interview
   function bookInterview(id, interview) {
     console.log(id, interview);
 
@@ -84,6 +85,7 @@ export default function Application(props) {
       [id]: appointment
     };
 
+    // put request to save new interview to DB
     return axios.put(`/api/appointments/${id}`, appointment)
     .then(() => {
       setState({
@@ -93,7 +95,24 @@ export default function Application(props) {
     })
   }
 
+  // deletes saved interview 
+  function deleteInterview(id) {
+    const appointment = {
+      ...state.appointments[id],
+      interviewer: null
+    };
 
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    // 
+   return axios.delete(`/api/appointments/${id}`)
+    .then(() => {
+      setState({ ...state, appointments });
+    })
+  }
 
   return (
     <main className="layout">
@@ -125,17 +144,21 @@ export default function Application(props) {
          
         return(
         <Appointment 
-          // key={appointment.id}
-          // {...appointment}
-          // interview={interview}
-          // interviewers={dailyInterviewers}
-          // bookInterview={bookInterview}
           key={appointment.id}
-          id={appointment.id}
-          time={appointment.time}
+          {...appointment}
           interview={interview}
           interviewers={dailyInterviewers}
           bookInterview={bookInterview}
+          deleteInterview={deleteInterview}
+
+          // no spread
+          // key={appointment.id}
+          // id={appointment.id}
+          // time={appointment.time}
+          // interview={interview}
+          // interviewers={dailyInterviewers}
+          // bookInterview={bookInterview}
+          // deleteInterview={deleteInterview}
         />
         )
       })
