@@ -40,15 +40,13 @@ export const getInterview = (state, interview) => {
   if (!interview) {
     return null;
   } else {
-    for(const id in state.interviewers) {
-      if(interview.interviewer === state.interviewers[id].id) {
+    for (const id in state.interviewers) {
+      if (interview.interviewer === state.interviewers[id].id) {
         return {
           student: interview.student,
-          interviewer: {...state.interviewers[id]}
+          interviewer: { ...state.interviewers[id] },
         };
       }
     }
-  };
-
-return;
+  }
 };
