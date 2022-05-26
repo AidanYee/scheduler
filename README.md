@@ -39,3 +39,12 @@ npm run storybook
 ```sh
 npm run cypress
 ```
+
+## Dependencies
+
+- Node.js v12.22.5
+- React.js
+- Axios
+- Storybook
+- Jest
+- Cypress
