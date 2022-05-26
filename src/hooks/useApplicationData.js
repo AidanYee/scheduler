@@ -3,106 +3,102 @@ const axios = require("axios");
 
 export default function ApplicationData(props) {
   const [state, setState] = useState({
-  day: "Monday",
-  days: [],
-  appointments: {},
-  interviewers: {},
+    day: "Monday",
+    days: [],
+    appointments: {},
+    interviewers: {},
   });
 
- const setDay = day => setState({...state, day});
+  const setDay = (day) => setState({ ...state, day });
 
   // creates a new interview
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: { ...interview },
     };
 
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
 
     // PUT REQUEST to save new interview to DB
-    return axios.put(`/api/appointments/${id}`, {interview})
-    .then(() => {
+    return axios.put(`/api/appointments/${id}`, { interview }).then(() => {
       setState({
         ...state,
         appointments,
         // Update the state with the new number of spots
-        days: spotsRemaining(appointments, id)
+        days: spotsRemaining(appointments, id),
       });
-    })
+    });
   }
 
-  // DELETES interview 
+  // DELETES interview
   function deleteInterview(id) {
     const appointment = {
       ...state.appointments[id],
-      interview: null
+      interview: null,
     };
 
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
 
     // DELETE REQUEST
-   return axios.delete(`/api/appointments/${id}`)
-    .then(() => {
-      setState({ ...state, 
-        appointments, 
+    return axios.delete(`/api/appointments/${id}`).then(() => {
+      setState({
+        ...state,
+        appointments,
         // Update the state with the new number of spots
-        days: spotsRemaining(appointments, id)
+        days: spotsRemaining(appointments, id),
       });
     });
   }
-  
-  const spotsRemaining = function(appointments, id) {
-  // console.log("🎲 ~ appointments", appointments);
-  // console.log("🎲 ~ id", id);
-  const dayIndex = state.days.findIndex(day => day.name === state.day);
- // console.log("🎲 ~ dayIndex", dayIndex);
- 
-  const appointmentList = [...state.days[dayIndex].appointments];
-  //console.log("🎲 ~ appointmentList", appointmentList);
 
-  // adds a spot if there no apointment ID
-  if (id && !appointmentList.includes(id)) {
-    appointmentList.push(id);
-  }
-  
-  let spotsRemaining = appointmentList.length;
-  // loops though spotsRemaining
-  appointmentList.forEach(id => {
-    // removes a spot if an appointment has an id
-    if (appointments[id].interview) spotsRemaining--;    
-    //console.log("🎲 ~ appointments[id].interview", appointments[id].interview);
-  });
-  
-  const day = {
-    ...state.days[dayIndex],
-    spots: spotsRemaining
+  const spotsRemaining = function (appointments, id) {
+    const dayIndex = state.days.findIndex((day) => day.name === state.day);
+
+    const appointmentList = [...state.days[dayIndex].appointments];
+
+    // adds a spot if there no apointment ID
+    if (id && !appointmentList.includes(id)) {
+      appointmentList.push(id);
+    }
+
+    let spotsRemaining = appointmentList.length;
+    // loops though spotsRemaining
+    appointmentList.forEach((id) => {
+      // removes a spot if an appointment has an id
+      if (appointments[id].interview) spotsRemaining--;
+    });
+
+    const day = {
+      ...state.days[dayIndex],
+      spots: spotsRemaining,
+    };
+
+    const days = [...state.days];
+    days[dayIndex] = day;
+
+    return days;
   };
-    
-  const days = [...state.days];
-  days[dayIndex] = day;
-  
-  //console.log("🎲 ~ days", days);
-  return days;
-};
 
-useEffect(() => {
+  useEffect(() => {
     Promise.all([
       axios.get("/api/days"),
       axios.get("/api/appointments"),
       axios.get("/api/interviewers"),
     ]).then((all) => {
-      setState(prev => ({...prev,
-      days: all[0].data,
-      appointments: all[1].data, interviewers: all[2].data}))
+      setState((prev) => ({
+        ...prev,
+        days: all[0].data,
+        appointments: all[1].data,
+        interviewers: all[2].data,
+      }));
     });
-  }, [])
+  }, []);
 
-  return { state, setDay, bookInterview, deleteInterview }
+  return { state, setDay, bookInterview, deleteInterview };
 }

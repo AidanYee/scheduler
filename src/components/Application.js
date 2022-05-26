@@ -4,22 +4,22 @@ import DayList from "./DayList";
 import "components/Application.scss";
 import Appointment from "components/Appointment/index";
 
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "../helpers/selectors";
+import {
+  getAppointmentsForDay,
+  getInterview,
+  getInterviewersForDay,
+} from "../helpers/selectors";
 
 import useApplicationData from "hooks/useApplicationData";
 
 export default function Application(props) {
   // useApplicationData Hook returns object below
-  const {
-    state,
-    setDay,
-    bookInterview,
-    deleteInterview,
-  } = useApplicationData();
-  
+  const { state, setDay, bookInterview, deleteInterview } =
+    useApplicationData();
+
   const dailyInterviewers = getInterviewersForDay(state, state.day);
   const dailyAppointments = getAppointmentsForDay(state, state.day).map(
-    appointment => {
+    (appointment) => {
       // Renders Appointment
       return (
         <Appointment
@@ -33,7 +33,7 @@ export default function Application(props) {
       );
     }
   );
-
+  // Renders sidebar 
   return (
     <main className="layout">
       <section className="sidebar">
@@ -44,11 +44,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList 
-            days={state.days} 
-            day={state.day} 
-            setDay={setDay} 
-          />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
