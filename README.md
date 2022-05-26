@@ -1,5 +1,17 @@
 # Interview Scheduler
 
+An interview scheduler app project where users are able to book an interview with an interviewer. Can book, edit, delete an interview as well. The "spots" remaining will be updated based on if a user adds/deletes an interview.
+
+## Screenshots
+
+![demo](public/images/schedulerDemo.gif)
+
+![1](public/images/1.png)
+
+![2](public/images/2.png)
+
+![3](public/images/3.png)
+
 ## Setup
 
 Install dependencies with `npm install`.
@@ -20,4 +32,10 @@ npm test
 
 ```sh
 npm run storybook
+```
+
+## Running Cypress Test Framework
+
+```sh
+npm run cypress
 ```
